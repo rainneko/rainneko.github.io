@@ -311,6 +311,9 @@
       sec.parentNode.removeChild(sec);
     });
     if (!steps.length) return;
+    var nProj = pin.children.length;
+    var count = h('p', { 'class': 'bs__count', 'aria-hidden': 'true' }, ['1 / ' + nProj]);
+    pin.appendChild(count);
     bs.appendChild(pin);
     block.appendChild(bs);
 
@@ -333,6 +336,7 @@
         if (a) p.removeAttribute('inert'); else p.setAttribute('inert', '');
       });
       if (prev < 0 || steps[prev].proj !== pj) {
+        count.textContent = (Array.prototype.indexOf.call(pin.children, pj) + 1) + ' / ' + nProj;
         var img = steps[Math.min(steps.length - 1, i + 1)].fig.querySelector('img');
         if (img) img.loading = 'eager';
       }
@@ -375,7 +379,7 @@
     var hasIO = 'IntersectionObserver' in window;
     var activeKey = null;
     var activeLayer = d.querySelector('.panel .layer.is-active');
-    var prevLayer = null, creamTimer = 0;
+    var prevLayer = null, creamTimer = 0, lastNav = null, lastIdx = -1, sweepT = 0;
     if (panel) root.classList.add('split-on');
 
     function toArray(l) { return Array.prototype.slice.call(l); }
@@ -414,7 +418,21 @@
       if (key === activeKey) return;
       activeKey = key;
       showLayer(key);
-      stage.classList.toggle('is-right', sec.getAttribute('data-side') === 'right');
+      var toRight = sec.getAttribute('data-side') === 'right';
+      var navName = sec.getAttribute('data-nav');
+      /* a change of SECTION (Papers / Built / Now / About): a cream mask sweeps
+         across the panel in the direction it travels (or of the scroll) */
+      if (panel && lastNav && navName !== lastNav && !root.classList.contains('no-wipe')) {
+        var wasRight = stage.classList.contains('is-right');
+        var dir = toRight !== wasRight ? (toRight ? 'sweep-r' : 'sweep-l') : (sections.indexOf(sec) > lastIdx ? 'sweep-r' : 'sweep-l');
+        panel.classList.remove('sweep-r', 'sweep-l');
+        void panel.offsetWidth;
+        panel.classList.add(dir);
+        clearTimeout(sweepT);
+        sweepT = setTimeout(function () { panel.classList.remove(dir); }, 700);
+      }
+      lastNav = navName; lastIdx = sections.indexOf(sec);
+      stage.classList.toggle('is-right', toRight);
       stage.classList.toggle('in-built', key === 'built');
       setNav(sec.getAttribute('data-nav'));
     }
