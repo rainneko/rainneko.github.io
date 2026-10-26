@@ -291,7 +291,7 @@
       var sec = d.getElementById(pr.key);
       var inner = sec && sec.querySelector('[data-render="project-job"]');
       if (!inner) return;
-      var proj = h('section', { 'class': 'bs__proj', id: pr.key, 'aria-label': pr.name });
+      var proj = h('section', { 'class': 'bs__proj' + (pi % 2 ? ' bs__proj--flip' : ''), id: pr.key, 'aria-label': pr.name });
       inner.classList.add('bs__text');
       each(inner.querySelectorAll('.reveal'), function (r) { r.classList.remove('reveal'); });
       var figs = h('div', { 'class': 'bs__figs' });

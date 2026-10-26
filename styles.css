@@ -706,6 +706,17 @@ html[data-mode="job"] .pc .foot { margin-top: 3rem; }
   html.bs-on .pj .bs__fig { position: absolute; left: 0; right: 0; top: 0; opacity: 0; transform: translateY(48px) scale(.985); transition: opacity .6s var(--ease-out), transform .7s var(--ease-out); }
   html.bs-on .pj .bs__fig.is-past { transform: translateY(-48px) scale(.985); }
   html.bs-on .pj .bs__fig.is-on { opacity: 1; transform: none; }
+  /* alternate sides: every second project puts the image left, text right; the swap slides the image across through a cream wash */
+  html.bs-on .pj .bs__proj--flip { grid-template-columns: minmax(0, 60fr) minmax(0, 40fr); }
+  html.bs-on .pj .bs__proj--flip .bs__figs { order: -1; }
+  html.bs-on .pj .bs__proj--flip .bs__text { justify-self: start; }
+  html.bs-on .pj .bs__proj { transition: visibility 0s linear .6s; }
+  html.bs-on .pj .bs__proj.is-on { transition-delay: 0s; z-index: 1; }
+  html.bs-on .pj .bs__figs { opacity: 0; transition: opacity .6s var(--ease-out); }
+  html.bs-on .pj .bs__proj.is-on .bs__figs { opacity: 1; animation: bsInR .6s var(--ease-out) both; }
+  html.bs-on .pj .bs__proj--flip.is-on .bs__figs { animation-name: bsInL; }
+  html.bs-on .pj .bs__figs::after { content: ""; position: absolute; inset: -2px; pointer-events: none; background: linear-gradient(90deg, transparent, var(--cream) 50%, transparent); opacity: 0; z-index: 2; }
+  html.bs-on .pj .bs__proj.is-on .bs__figs::after { animation: bsWash .6s var(--ease-out) both; }
   .pj .bs__count { position: absolute; right: clamp(24px, 3vw, 48px); bottom: 22px; margin: 0; font-size: 12px; letter-spacing: .14em; color: var(--mute); font-variant-numeric: tabular-nums; }
 }
 .pj .bs__count { display: none; }
@@ -715,6 +726,11 @@ html.bs-on .pj .bs__count { display: block; }
   html.bs-on .pj .bs__figs { height: calc(60vh + 34px); }
   html.bs-on .pj .proj__bullets li { font-size: 14px; }
 }
+
+@keyframes bsInR { from { transform: translateX(-38%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes bsInL { from { transform: translateX(38%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes bsWash { 0% { opacity: .9; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .pj .bs__figs, .pj .bs__figs::after { animation: none !important; } }
 
 /* ---------- Now panel: the atlas home page in a browser window ---------- */
 .pj .layer--browser { padding: 0 0 64px; }

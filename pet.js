@@ -101,7 +101,7 @@
   function homeX() { return viewW() < 600 ? corner() : (zone ? viewW() * 0.62 : 24); }
 
   /* ---- invisible platforms: top edges of visible text blocks ---- */
-  var PLAT_SEL = 'p, h1, h2, h3, li, figure, nav, .card, .pub, .sec__inner > ul, .thanks, blockquote';
+  var PLAT_SEL = 'p, h1, h2, h3, li, figure, nav, .card, .pub, .sec__inner > ul, blockquote';
   /* height above the floor of the surface he stands on (0 = floor) */
   function ground() {
     if (!plat) return 0;
@@ -116,6 +116,16 @@
   /* every visible text block he could stand on, with its rect.
      .reveal blocks count even while they are still fading in (opacity 0 for
      a moment after they scroll into view). */
+  /* a real content block: tall enough, wider than him, with text or an image
+     (never a hairline rule, a border-only divider or the footer's separator) */
+  function isBlock(n, r, cs) {
+    if (n.tagName === 'HR' || r.height < 24 || r.width < W) return false;
+    if (/(^|\s)(rule|line|divider|sep|separator|foot__line)(\s|$|__|-)/.test(n.className || '')) return false;
+    var txt = (n.textContent || '').replace(/\s+/g, '').length;
+    if (!txt && !n.querySelector('img, svg, canvas, video')) return false;
+    if (n.closest('.word__tiles') && !txt) return false;
+    return true;
+  }
   function platforms() {
     var vh = viewH(), out = [];
     Array.prototype.forEach.call(document.querySelectorAll(PLAT_SEL), function (n) {
@@ -125,6 +135,7 @@
       var cs = getComputedStyle(n);
       if (cs.visibility === 'hidden' || cs.display === 'none') return;
       if (+cs.opacity === 0 && !n.closest('.reveal')) return;
+      if (!isBlock(n, r, cs)) return;
       out.push({ n: n, r: r });
     });
     return out;
