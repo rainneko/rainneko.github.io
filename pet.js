@@ -30,8 +30,10 @@
   var BASE_KEYS = ['idle', 'waiting', 'look', 'runLeft', 'runRight', 'jump', 'wave'];
   var IDLE_KINDS = ['idle', 'waiting', 'look', 'idle'];
   /* quiet activities while idle; [key, cycles] — one-shot GIFs (stretch, tactics) play once */
-  var ACTIVITIES = [['reading', 5], ['sitting', 4], ['lying', 4], ['breathing', 3],
-                    ['stretch', 1], ['scouting', 3], ['tactics', 1]];
+  var QUIET = [['reading', 5], ['sitting', 4], ['lying', 4], ['breathing', 3], ['stretch', 1]];
+  /* sword / training actions: about half the picks, and always the first one (~6–14 s in) */
+  var SWORD = [['combo', 2], ['parry', 2], ['salute', 2], ['cloak', 2], ['scouting', 3], ['tactics', 1]];
+  var actCount = 0;
   /* clicks cycle through these instead of always waving */
   var FLOURISHES = ['wave', 'cloak', 'salute', 'badge', 'parry', 'combo'];
 
@@ -80,8 +82,9 @@
   var timer = null, raf = null;
   var paused = false, userPaused = false;
   var lastJump = Date.now(), nextJumpGap = rand(10000, 20000);
-  var nextActAt = Date.now() + rand(8000, 20000), nextAct = null;
+  var nextActAt = 0, nextAct = null;
   var flourishIdx = 0;
+  var plat = null;             /* element he is standing on, or null = the viewport floor */
   var drops = [];              /* times he was let go in mid-air */
   var drag = null, currentGif = '', afterLand = null;
 
@@ -96,6 +99,36 @@
   function clampY(v) { return Math.max(0, Math.min(maxY(), v)); }
   function corner() { return clampX(maxX() - 16); }
   function homeX() { return viewW() < 600 ? corner() : (zone ? viewW() * 0.62 : 24); }
+
+  /* ---- invisible platforms: top edges of visible text blocks ---- */
+  var PLAT_SEL = 'p, h1, h2, h3, li, figure, nav, .card, .pub, .sec__inner > ul, .thanks, blockquote';
+  /* height above the floor of the surface he stands on (0 = floor) */
+  function ground() {
+    if (!plat) return 0;
+    var r = plat.getBoundingClientRect();
+    if (!r.width || r.top < H * 0.5 || r.top > viewH()) return -1;   /* platform scrolled away */
+    return viewH() - r.top;
+  }
+  function platRect(n) {
+    var r = n.getBoundingClientRect();
+    return r.width > W && r.height > 0 && r.bottom > 0 ? r : null;
+  }
+  /* nearest platform top at or below his feet that his feet overlap, else null (floor) */
+  function findPlatform() {
+    var feet = viewH() - y, cx = x + W / 2, best = null, bestTop = Infinity;
+    var vh = viewH();
+    Array.prototype.forEach.call(document.querySelectorAll(PLAT_SEL), function (n) {
+      if (n === el || el.contains(n) || n.closest('.pet, [aria-hidden="true"], .panel')) return;
+      var r = platRect(n);
+      if (!r || r.top < feet - 4 || r.top < H * 0.5 || r.top > vh - 24) return;
+      if (cx < r.left + 8 || cx > r.right - 8) return;
+      var cs = getComputedStyle(n);
+      if (cs.visibility === 'hidden' || +cs.opacity === 0) return;
+      if (r.top < bestTop) { bestTop = r.top; best = n; }
+    });
+    return best;
+  }
+  function onPlatform() { return plat && ground() > 0; }
 
   function place() { el.style.transform = 'translate3d(' + Math.round(x) + 'px,' + (-Math.round(y)) + 'px,0)'; }
   function setGif(key) {
@@ -115,8 +148,10 @@
   function planActivity() {
     var h = new Date().getHours();
     var night = h >= 23 || h < 6;
-    nextAct = night && Math.random() < 0.6 ? ['sleeping', 5] : pick(ACTIVITIES);
-    nextActAt = Date.now() + rand(8000, 20000);
+    var first = actCount++ === 0;
+    nextAct = !first && night && Math.random() < 0.6 ? ['sleeping', 5]
+      : pick(first || Math.random() < 0.5 ? SWORD : QUIET);
+    nextActAt = Date.now() + (first ? rand(6000, 14000) : rand(8000, 20000));
     load(nextAct[0]);
   }
   function nextFlourish() { return FLOURISHES[flourishIdx % FLOURISHES.length]; }
@@ -124,8 +159,9 @@
   /* ---- behaviours ---- */
   function idle(kind) { setState('idle', kind || pick(IDLE_KINDS)); schedule(); }
   function settle(kind) {
-    if (y > 0 && !reduced.matches) { fall(); return; }
-    y = 0; place(); idle(kind);
+    var g = Math.max(0, ground());
+    if (y > g + 1 && !reduced.matches) { fall(); return; }
+    y = g; place(); idle(kind);
   }
   function schedule() {
     if (timer) clearTimeout(timer);
@@ -136,7 +172,8 @@
   function decide() {
     timer = null;
     if (state !== 'idle' || still()) return;
-    if (y > 0) { fall(); return; }
+    if (plat && ground() < 0) { plat = null; }
+    if (y > Math.max(0, ground()) + 1) { fall(); return; }
     if (nextAct && Date.now() >= nextActAt) { activity(); return; }
     if (Date.now() - lastJump > nextJumpGap) { jump(); return; }
     if (Math.random() < 0.42) walk(); else idle();
@@ -163,11 +200,24 @@
     }, GIFS.jump[1]);
   }
   function walk() {
-    if (y > 0) { fall(); return; }
-    var span = maxX();
-    if (span < 160) { idle(); return; }
-    var target = clampX(rand(MARGIN, span - MARGIN)), tries = 0;
-    while (Math.abs(target - x) < 80 && tries++ < 8) target = clampX(rand(MARGIN, span - MARGIN));
+    var g0 = ground();
+    if (plat && g0 < 0) { plat = null; g0 = 0; }
+    if (y > g0 + 1) { fall(); return; }
+    var lo = MARGIN, hi = maxX() - MARGIN, off = false;
+    if (plat) {
+      /* walk along the platform; now and then walk off its end */
+      var pr = plat.getBoundingClientRect();
+      lo = Math.max(0, pr.left - W / 2 + 10); hi = Math.min(maxX(), pr.right - W / 2 - 10);
+      if (Math.random() < 0.3) { off = true; }
+    }
+    var span = hi - lo;
+    if (!off && span < 60) { idle(); return; }
+    var target, tries = 0;
+    if (off) target = x - lo < hi - x ? clampX(lo - W) : clampX(hi + W);
+    else {
+      target = rand(lo, hi);
+      while (Math.abs(target - x) < Math.min(80, span / 3) && tries++ < 8) target = rand(lo, hi);
+    }
     var dir = target > x ? 1 : -1;
     setState('walk', dir > 0 ? 'runRight' : 'runLeft');
     var last = performance.now();
@@ -175,6 +225,11 @@
       var dt = Math.min(0.05, (t - last) / 1000);
       last = t;
       x += dir * SPEED * dt;
+      if (plat) {
+        var g = ground(), r = plat.getBoundingClientRect(), cx = x + W / 2;
+        if (g < 0 || cx < r.left || cx > r.right) { plat = null; raf = null; fall(); return; }
+        y = g;
+      }
       var edge = maxX();
       if (target > edge) target = edge;
       if ((dir > 0 && x >= target) || (dir < 0 && x <= target)) {
@@ -203,7 +258,9 @@
     oneShot(key);
   }
   function fall() {
-    if (y <= 0) { y = 0; place(); landed(); return; }
+    plat = findPlatform();
+    var g = Math.max(0, ground());
+    if (y <= g + 1) { y = g; place(); landed(); return; }
     setState('fall', 'jump');
     var v = 0, last = performance.now();
     function step(t) {
@@ -211,7 +268,9 @@
       last = t;
       v += GRAVITY * dt;
       y -= v * dt;
-      if (y <= 0) { y = 0; place(); raf = null; landed(); return; }
+      g = ground();                        /* re-read: the page may scroll mid-fall */
+      if (g < 0) { plat = null; g = 0; }
+      if (y <= g) { y = g; place(); raf = null; landed(); return; }
       place();
       raf = requestAnimationFrame(step);
     }
@@ -244,6 +303,7 @@
       drag.moved = true;
       afterLand = null;
       setState('drag', 'jump');
+      plat = null;
       el.classList.add('is-dragging');
     }
     x = clampX(drag.ox + dx);
@@ -257,7 +317,7 @@
     el.classList.remove('is-dragging');
     try { el.releasePointerCapture(e.pointerId); } catch (err) { /* ignore */ }
     if (!moved) {
-      if (y > 0 && !reduced.matches) { afterLand = 'flourish'; fall(); } else { y = 0; place(); flourish(); }
+      if (y > Math.max(0, ground()) + 1 && !reduced.matches) { afterLand = 'flourish'; fall(); } else { y = Math.max(0, ground()); place(); flourish(); }
       return;
     }
     if (y > 20) {                         /* let go off the floor */
@@ -266,7 +326,7 @@
       drops.push(now);
       if (drops.length > 3) { drops = []; load('sad'); afterLand = 'sad'; }
     }
-    if (reduced.matches) { y = 0; place(); landed(); } else fall();
+    if (reduced.matches) { plat = findPlatform(); y = Math.max(0, ground()); place(); landed(); } else fall();
   }
   el.addEventListener('pointerup', endDrag);
   el.addEventListener('pointercancel', endDrag);
@@ -286,11 +346,20 @@
     }
   });
 
+  /* he is position:fixed, so on scroll he rides his platform (or falls when it leaves the view) */
+  function follow() {
+    if (!plat || drag || state === 'fall' || state === 'walk') return;
+    var g = ground();
+    if (g < 0) { plat = null; if (reduced.matches) { y = 0; place(); } else fall(); return; }
+    y = g; place();
+  }
+  window.addEventListener('scroll', follow, { passive: true });
   window.addEventListener('resize', function () {
     measure();
     x = clampX(x); y = clampY(y);
-    if (reduced.matches && !drag) { x = corner(); y = 0; }
+    if (reduced.matches && !drag && !plat) { x = corner(); y = 0; }
     place();
+    follow();
   });
 
   /* ---- "Pause him" toggle, inside the note that introduces him ---- */
@@ -306,7 +375,7 @@
       toggle.setAttribute('aria-pressed', String(userPaused));
       toggle.textContent = userPaused ? 'Let him wander' : 'Pause him';
       if (drag) return;
-      if (userPaused) { stopTimers(); y = 0; setState('idle', 'idle'); place(); }
+      if (userPaused) { stopTimers(); y = 0; plat = null; setState('idle', 'idle'); place(); }
       else if (!reduced.matches) idle('idle');
     });
     note.appendChild(toggle);
@@ -316,7 +385,7 @@
     if (document.hidden) {
       paused = true;
       if (drag) return;
-      stopTimers(); y = 0; setState('idle', 'idle'); place();
+      stopTimers(); y = 0; plat = null; setState('idle', 'idle'); place();
     } else {
       paused = false;
       if (state === 'idle') schedule();
@@ -325,7 +394,7 @@
 
   function applyMotionPreference() {
     stopTimers();
-    if (reduced.matches) { x = corner(); y = 0; setState('idle', 'idle'); place(); }
+    if (reduced.matches) { x = corner(); y = 0; plat = null; setState('idle', 'idle'); place(); }
     else { place(); idle('idle'); }
   }
   if (reduced.addEventListener) reduced.addEventListener('change', applyMotionPreference);

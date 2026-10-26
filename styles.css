@@ -629,3 +629,46 @@ body.has-pet { padding-bottom: 130px; }
 html[data-mode="job"] .pc .nav a, html[data-mode="job"] .pc .foot a, .pc .mode-pill a { text-decoration: none; }
 .layer figcaption em, .sec__fig figcaption em { margin-right: .12em; }
 html[data-mode="job"] .pc .foot { margin-top: 3rem; }
+
+/* ---------- atlas mosaic: real crops instead of page screenshots ---------- */
+.mosaic { position: relative; overflow: hidden; background: var(--cream); }
+.mosaic__grid { display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: var(--mos-row, 64px); grid-auto-flow: dense; gap: 10px; padding: 18px;
+  -webkit-mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, #000 50%, rgba(0, 0, 0, 0) 100%); mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, #000 50%, rgba(0, 0, 0, 0) 100%); }
+.mosaic__tile { display: block; overflow: hidden; background: #fbf8f1; border: 1px solid rgba(21, 19, 15, .14); border-radius: 2px; box-shadow: 0 1px 2px rgba(21, 19, 15, .06), 0 6px 14px -10px rgba(21, 19, 15, .35); transition: box-shadow .6s ease, border-color .6s ease, transform .6s ease; }
+.mosaic__tile.is-strip { grid-column: span 3; }
+.mosaic__tile.is-strip.is-2 { grid-column: span 2; }
+.mosaic__tile img { display: block; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
+.mosaic__tile.is-strip img { object-fit: contain; }
+.mosaic__tile.is-hit { border-color: var(--accent, #8a2d1c); box-shadow: 0 0 0 2px rgba(138, 45, 28, .35), 0 8px 18px -10px rgba(21, 19, 15, .45); transform: translateY(-1px); }
+.mosaic__rec { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(88%, 460px); display: block; padding: 10px 12px 12px; background: #fff; color: var(--ink, #15130f); text-decoration: none; border: 1px solid rgba(21, 19, 15, .16); border-radius: 8px; box-shadow: 0 2px 4px rgba(21, 19, 15, .06), 0 18px 40px -18px rgba(21, 19, 15, .5); z-index: 2; }
+.mosaic__url { display: block; font-size: 11px; letter-spacing: .02em; color: #6d675c; margin-bottom: 8px; padding: 4px 8px; border: 1px solid rgba(21, 19, 15, .14); border-radius: 4px; background: #faf8f3; }
+.mosaic__row { display: grid; grid-template-columns: 76px 1fr; gap: 4px 12px; align-items: center; }
+.mosaic__row img { grid-row: span 2; width: 76px; height: auto; border: 1px solid rgba(21, 19, 15, .14); }
+.mosaic__id { font-size: 15px; color: #8a2d1c; line-height: 1.2; }
+.mosaic__id small { display: block; font-size: 11.5px; color: #6d675c; margin-top: 2px; }
+.mosaic__num { font-size: 12.5px; font-variant-numeric: tabular-nums; color: var(--ink-2, #3a362f); }
+.mosaic__link { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+.mosaic__link line { stroke: #8a2d1c; stroke-width: 1.25; stroke-dasharray: 3 3; opacity: 0; transition: opacity .8s ease; }
+.mosaic.is-linked .mosaic__link line { opacity: .8; }
+.mosaic.no-anim .mosaic__tile, .mosaic.no-anim .mosaic__link line { transition: none; }
+.pj .layer--mosaic { display: block; padding: 0; }
+.pj .layer--mosaic .mosaic--panel { position: absolute; inset: 0; --mos-row: clamp(56px, 7.5vw, 96px); }
+.pj .layer--mosaic img, .pj .layer.is-active .mosaic img { transform: none; }
+.mosaic--fig { aspect-ratio: 4 / 3; border-radius: 12px; --mos-row: 48px; }
+.mosaic--fig .mosaic__grid { gap: 7px; padding: 12px; }
+.mosaic--win, .mosaic--card { --mos-row: 34px; }
+.mosaic--win .mosaic__grid, .mosaic--card .mosaic__grid { gap: 5px; padding: 8px; }
+.mosaic--win .mosaic__rec, .mosaic--card .mosaic__rec { width: 92%; padding: 6px 8px 8px; }
+.mosaic--win .mosaic__url, .mosaic--card .mosaic__url { font-size: 9.5px; margin-bottom: 5px; padding: 2px 5px; }
+.mosaic--win .mosaic__row, .mosaic--card .mosaic__row { grid-template-columns: 44px 1fr; gap: 2px 7px; }
+.mosaic--win .mosaic__row img, .mosaic--card .mosaic__row img { width: 44px; }
+.mosaic--win .mosaic__id, .mosaic--card .mosaic__id { font-size: 11.5px; }
+.mosaic--win .mosaic__id small, .mosaic--card .mosaic__id small { display: none; }
+.mosaic--win .mosaic__num, .mosaic--card .mosaic__num { font-size: 10px; }
+.mosaic--card { aspect-ratio: 16 / 10; }
+.pc .atlas-win .mosaic img { width: 100%; margin: 0; }
+.pc .mosaic .mosaic__tile img { height: 100%; object-position: center; transform: none; }
+.pc .mosaic .mosaic__row img, .pc .atlas-win .mosaic .mosaic__row img { width: 44px; height: auto; transform: none; }
+.pc .mosaic a, .pc .mosaic a * { text-decoration: none; }
+.mosaic--win .mosaic__rec, .mosaic--card .mosaic__rec { top: auto; bottom: 8px; transform: translateX(-50%); width: 84%; }
+.mosaic--win .mosaic__url, .mosaic--card .mosaic__url { display: none; }

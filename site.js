@@ -116,7 +116,7 @@
     });
 
     /* job: one section per project (v3 markup) */
-    var THUMBS_FROM = { atlas: 3, nero: 2 };
+    var THUMBS_FROM = { nero: 1 };
     var THUMBS_LABEL = { atlas: 'More pages of the atlas', nero: 'More views of the city' };
     fill('[data-render="project-job"]', function (box) {
       var key = box.getAttribute('data-key'), i = 0, pr = null;
@@ -135,8 +135,8 @@
       })));
       box.appendChild(h('ul', { 'class': 'stack reveal', 'aria-label': 'Stack' }, pr.stack.map(function (s) { return h('li', null, [s]); })));
       var cta = h('p', { 'class': 'hero__cta reveal' });
-      if (pr.url !== pr.repo) cta.appendChild(h('a', { 'class': 'btn btn--primary', href: pr.url }, ['Open the atlas ', arrow()]));
-      cta.appendChild(h('a', { 'class': 'btn' + (pr.url === pr.repo ? ' btn--primary' : ''), href: pr.repo, 'aria-label': pr.name + ' on GitHub' }, ['GitHub ', arrow()]));
+      if (pr.url !== pr.repo || !pr.repo) cta.appendChild(h('a', { 'class': 'btn btn--primary', href: pr.url }, ['Open the atlas ', arrow()]));
+      if (pr.repo) cta.appendChild(h('a', { 'class': 'btn' + (pr.url === pr.repo ? ' btn--primary' : ''), href: pr.repo, 'aria-label': pr.name + ' on GitHub' }, ['GitHub ', arrow()]));
       box.appendChild(cta);
       if (THUMBS_FROM[key] != null) {
         box.appendChild(h('ul', { 'class': 'thumbs reveal', 'aria-label': THUMBS_LABEL[key] },
@@ -173,11 +173,11 @@
         var links = h('p', { 'class': 'card-links' });
         if (pr.url !== pr.repo) {
           links.appendChild(h('a', { href: pr.url, 'aria-label': 'Live site: ' + pr.name }, ['Live site ', arrow()]));
-          links.appendChild(sep());
+          if (pr.repo) links.appendChild(sep());
         }
-        links.appendChild(h('a', { href: pr.repo, 'aria-label': 'GitHub: ' + pr.name }, ['GitHub ', arrow()]));
+        if (pr.repo) links.appendChild(h('a', { href: pr.repo, 'aria-label': 'GitHub: ' + pr.name }, ['GitHub ', arrow()]));
         grid.appendChild(h('article', { 'class': 'card', id: pr.key }, [
-          h('div', { 'class': 'card-media' }, [h('img', { loading: 'lazy', alt: m.alt, width: m.w, height: m.h, src: m.src })]),
+          pr.key === 'atlas' ? h('div', { 'class': 'card-media mosaic mosaic--card', 'data-mosaic': '12' }) : h('div', { 'class': 'card-media' }, [h('img', { loading: 'lazy', alt: m.alt, width: m.w, height: m.h, src: m.src })]),
           h('div', { 'class': 'card-body' }, [
             h('span', { 'class': 'status' }, [pr.status]),
             h('h3', null, [h('a', { href: pr.url }, [pr.name])]),
@@ -399,11 +399,76 @@
     } catch (e) { all(); }
   }
 
+  /* ---------- mosaic of real atlas crops (replaces page screenshots) ---------- */
+  var ATL = 'https://ecco-atlas-visual-search.2.rahtiapp.fi';
+  /* [file stem, taxonomy path, class id, w, h]; hp = headpiece strip, di = decorated initial, tp = factotum */
+  var TILES = [
+    ['hp_C080_02','HP-ann/subclass','C080_02',900,325], ['di_A_two_cherubs','DI-ann/superclass','A_two_cherubs',207,273], ['tp_17000','FT-ann/superclass','17000',369,335],
+    ['di_M_bird_in_the_middle','DI-ann/superclass','M_bird_in_the_middle',224,255], ['hp_C168_01','HP-ann/subclass','C168_01',900,342], ['tp_birds_and_crown','FT-ann/superclass','birds_and_crown',220,280],
+    ['hp_C101_01','HP-ann/subclass','C101_01',900,335], ['di_O_character_in_the_middle','DI-ann/superclass','O_character_in_the_middle',251,254], ['hp_C034_01','HP-ann/subclass','C034_01',900,290],
+    ['tp_21101','FT-ann/superclass','21101',368,366], ['di_S_a_cherub','DI-ann/superclass','S_a_cherub',229,241], ['hp_C163_07','HP-ann/subclass','C163_07',900,340],
+    ['di_E','DI-ann/superclass','E',344,338], ['hp_C067_01','HP-ann/subclass','C067_01',900,343], ['tp_19600','FT-ann/superclass','19600',388,364],
+    ['di_N_a_cherub','DI-ann/superclass','N_a_cherub',220,254], ['hp_C164_01','HP-ann/subclass','C164_01',900,298], ['di_T_a_figure_laying_down','DI-ann/superclass','T_a_figure_laying_down',232,225],
+    ['hp_C156_01','HP-ann/subclass','C156_01',900,313], ['tp_12601','FT-ann/superclass','12601',243,242], ['di_W_with_angel_face_on_bottom','DI-ann/superclass','W_with_angel_face_on_bottom',234,264],
+    ['hp_C051_03','HP-ann/subclass','C051_03',900,298], ['di_C_large','DI-ann/superclass','C_large',352,352], ['tp_8700','FT-ann/superclass','8700',202,221],
+    ['hp_C140_01','HP-ann/subclass','C140_01',878,341], ['di_Y_figure_in_the_middle','DI-ann/superclass','Y_figure_in_the_middle',211,275], ['hp_C057_01','HP-ann/subclass','C057_01',900,307],
+    ['tp_2_side_kidneys_bowl_on_top','FT-ann/superclass','2_side_kidneys_bowl_on_top',242,270], ['di_F_lying','DI-ann/superclass','F_lying',234,233], ['hp_C102_01','HP-ann/subclass','C102_01',900,252],
+    ['di_I_flower_pattern_2','DI-ann/superclass','I_flower_pattern_2',238,234], ['hp_C120_01','HP-ann/subclass','C120_01',900,225], ['tp_9300','FT-ann/superclass','9300',190,221],
+    ['hp_vase_middle_two_parterres_vines_02','HP-ann/subclass','vase_middle_two_parterres_vines_02',900,192], ['hp_C025_06','HP-ann/subclass','C025_06',900,146], ['hp_C054_05','HP-ann/subclass','C054_05',900,140]
+  ];
+  var KIND = { hp: 'Headpiece', di: 'Decorated initial', tp: 'Factotum' };
+  /* one real row of the atlas Ornaments table (read from the live /classes page) */
+  var RECORD = { id: 'C101_01', desc: 'centered flower in oval border with flanking baskets', images: 253, books: 206, from: 1722, to: 1798 };
+  function mosaic() {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    each(d.querySelectorAll('[data-mosaic]'), function (box) {
+      box.textContent = '';
+      var n = +box.getAttribute('data-mosaic') || TILES.length;
+      var grid = h('div', { 'class': 'mosaic__grid' });
+      var hit = null;
+      TILES.slice(0, n).forEach(function (t, i) {
+        var k = t[0].slice(0, 2), wide = k === 'hp';
+        var a = h('a', { 'class': 'mosaic__tile' + (wide ? ' is-strip' + (i % 3 === 1 ? ' is-2' : '') : ''), href: ATL + '/class/' + t[1] + '/' + t[2], tabindex: '-1' }, [
+          h('img', { src: 'assets/mosaic/' + t[0] + '.jpg', alt: KIND[k] + ', atlas class ' + t[2], width: t[3], height: t[4], loading: 'lazy', decoding: 'async' })
+        ]);
+        if (t[2] === RECORD.id) hit = a;
+        grid.appendChild(a);
+      });
+      box.appendChild(grid);
+      var rec = h('a', { 'class': 'mosaic__rec', href: ATL + '/class/HP-ann/subclass/' + RECORD.id, 'aria-label': 'Open class ' + RECORD.id + ' in the live atlas' }, [
+        h('span', { 'class': 'mosaic__url' }, ['ecco-atlas · /classes']),
+        h('span', { 'class': 'mosaic__row' }, [
+          h('img', { src: 'assets/mosaic/hp_' + RECORD.id + '.jpg', alt: '', width: 900, height: 335 }),
+          h('span', { 'class': 'mosaic__id' }, [RECORD.id, h('small', null, [RECORD.desc])]),
+          h('span', { 'class': 'mosaic__num' }, [RECORD.images + ' images · ' + RECORD.books + ' books · ' + RECORD.from + '–' + RECORD.to])
+        ])
+      ]);
+      box.appendChild(rec);
+      if (!hit) return;
+      var NS = 'http://www.w3.org/2000/svg';
+      var svg = d.createElementNS(NS, 'svg'), line = d.createElementNS(NS, 'line');
+      svg.setAttribute('class', 'mosaic__link'); svg.setAttribute('aria-hidden', 'true');
+      svg.appendChild(line); box.appendChild(svg);
+      function draw() {
+        var b = box.getBoundingClientRect(), p = hit.getBoundingClientRect(), q = rec.querySelector('img').getBoundingClientRect();
+        if (!b.width) return;
+        line.setAttribute('x1', p.left + p.width / 2 - b.left); line.setAttribute('y1', p.top + p.height / 2 - b.top);
+        line.setAttribute('x2', q.left + q.width / 2 - b.left); line.setAttribute('y2', q.top + q.height / 2 - b.top);
+      }
+      function on() { draw(); hit.classList.add('is-hit'); box.classList.add('is-linked'); }
+      if (reduce || !('IntersectionObserver' in window)) { box.classList.add('no-anim'); setTimeout(on, 50); }
+      else new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) setTimeout(on, 500); }); }, { threshold: 0.35 }).observe(box);
+      window.addEventListener('resize', draw);
+      box.addEventListener('transitionend', draw);
+    });
+  }
+
   /* ---------- boot ---------- */
   root.classList.add('js');
   function boot() {
     var S = window.SITE;
     if (S) { render(S); words(S); band(S); }
+    mosaic();
     markPill();
     /* On About / Now the pill switches the chrome in place; on the two home
        pages it is a plain link (?mode=…) that also works without JS. */

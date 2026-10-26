@@ -10,7 +10,7 @@
 <meta property="og:title" content="Ruilin Wang">
 <meta property="og:description" content="Self-supervised models that find the same woodblock across 33 million scanned pages, and the public atlas that lets historians use them.">
 <meta property="og:url" content="https://rainneko.github.io">
-<meta property="og:image" content="https://rainneko.github.io/assets/atlas/home.png">
+<meta property="og:image" content="https://rainneko.github.io/assets/mosaic/hp_C101_01.jpg">
 <meta name="theme-color" content="#faf8f4">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f5d4e'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Georgia,Times,serif' font-size='40' font-weight='600' fill='%23faf8f4'%3ER%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,17 +50,17 @@
         <img class="layer__orn" src="assets/ornaments/initial_R.png" alt="A woodcut initial letter R, an eighteenth-century printer's ornament" width="656" height="656">
         <figcaption>A woodcut initial R, an eighteenth-century printer's ornament</figcaption>
       </figure>
-      <figure class="layer layer--shot" data-layer="atlas" aria-hidden="true">
-        <div class="layer__win"><img class="layer__shot layer__shot--app" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" data-src="assets/atlas/classes.png" alt="ECCO Ornament Atlas, the Ornaments page: a table of human subclasses with thumbnails, image counts, book counts and year spans" width="1440" height="900"></div>
+      <figure class="layer layer--cream layer--mosaic" data-layer="atlas" aria-hidden="true">
+        <div class="mosaic mosaic--panel" data-mosaic="36"></div>
         <figcaption>ECCO Ornament Atlas · /classes — human classes and machine clusters</figcaption>
       </figure>
       <figure class="layer layer--photo" data-layer="nero" aria-hidden="true">
-        <img class="layer__shot layer__shot--center" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" data-src="assets/nero/10-rome-week2-palatine.jpg" alt="A 3D model of Rome seen from above the Palatine: red-roofed palaces, pines and the city stretching to the hills" width="1280" height="720">
-        <figcaption>Nero Rome Reader · the Palatine, week two of the build</figcaption>
+        <img class="layer__shot layer__shot--center" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" data-src="assets/nero_v2/04_circus_senate_palace.jpg" alt="A 3D render of Nero's Rome: Circus Maximus, the Senate and the palace" width="1920" height="1080">
+        <figcaption>Nero Rome Reader · Circus Maximus, the Senate and the palace</figcaption>
       </figure>
       <figure class="layer layer--photo" data-layer="novel2city" aria-hidden="true">
-        <img class="layer__shot layer__shot--reader" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" data-src="assets/nero/00-day1-rome.jpg" alt="The reader interface: the Forum of Rome in 3D with labelled temples on the left, the novel's text in a panel on the right" width="1600" height="900">
-        <figcaption>novel2city · Rome on day one of the pipeline</figcaption>
+        <img class="layer__shot layer__shot--center" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" data-src="assets/nero_v2/04_circus_senate_palace.jpg" alt="A 3D render of Nero's Rome: Circus Maximus, the Senate and the palace" width="1920" height="1080">
+        <figcaption>novel2city · Circus Maximus, the Senate and the palace</figcaption>
       </figure>
       <figure class="layer layer--shot" data-layer="now" aria-hidden="true">
         <div class="layer__win"><img class="layer__shot layer__shot--app" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" data-src="assets/atlas/agents.png" alt="ECCO Ornament Atlas, the Publishers and printers page: houses ranked by books, blocks used and main house of" width="1440" height="900"></div>
@@ -106,23 +106,21 @@
     <div class="block" id="built">
 
       <section class="sec" id="atlas" data-panel="atlas" data-side="right" data-nav="built">
-        <figure class="sec__fig sec__fig--zoom">
-          <img src="assets/atlas/classes.png" alt="ECCO Ornament Atlas, the Ornaments page: a table of human subclasses with thumbnails, image counts, book counts and year spans" loading="lazy" width="1440" height="900">
-        </figure>
+        <figure class="sec__fig sec__fig--cream"><div class="mosaic mosaic--fig" data-mosaic="18"></div></figure>
         <div class="sec__inner" data-render="project-job" data-key="atlas"></div>
-        <div class="sec__inner"><!--ns:projects--><noscript><ol class="ns-list"><li><h3><a href="https://ecco-atlas-visual-search.2.rahtiapp.fi">ECCO Ornament Atlas</a> · <a href="https://github.com/rainneko/ecco-atlas">GitHub</a> <small>(live, beta)</small></h3><p>A public atlas of 464,352 ornaments from 77,848 eighteenth-century books: browse by book, by human class and machine cluster, by printer and publisher, and upload an ornament to find its type.</p><ul><li>/books — a page strip marks every ornament, by type</li><li>/classes — human classes and machine clusters, each image in date order</li><li>/agents — which plates each printing house used, and which houses shared them</li><li>/search/image — upload an ornament, find its closest classes and houses</li></ul></li><li><h3><a href="https://github.com/rainneko/nero_rome_visual">Nero Rome Reader</a> <small>(open source)</small></h3><p>A reading site for my 430k-character Chinese novel <span lang="zh-Hans">《尼禄重工纪元》</span>: the text on one side, a living 3D Rome (AD 54–68) behind it that changes with the plot as you scroll.</p><ul><li>Nine city states, ~200 historical places, ~20,000 lots, 50+ Blender hero buildings, 581 place-name links</li><li>Three.js, one HTML file, no bundler</li><li>Built with a multi-agent pipeline: Opus directing, Sonnet integrating, Haiku modelling in Blender; 1.12B tokens over three days, 94% cache reads</li></ul></li><li><h3><a href="https://github.com/rainneko/novel2city">novel2city</a> <small>(Claude skill)</small></h3><p>A reusable Claude skill that turns any novel into a chapter-synced 3D city: story bible, period filtering, reference-image scoring, procedural city fabric, hero buildings, lighting, reading UI, and a measured token ledger per stage.</p><ul><li>Nine stages, each with an acceptance gate</li><li>The whole Rome case stood on day one; two weeks of asset refinement followed</li><li>Every token accounted for: ~2–3M per simple building, ~120M for the road system</li></ul></li></ol></noscript><!--/ns--></div>
+        <div class="sec__inner"><!--ns:projects--><noscript><ol class="ns-list"><li><h3><a href="https://ecco-atlas-visual-search.2.rahtiapp.fi">ECCO Ornament Atlas</a> <small>(live, beta)</small></h3><p>A public atlas of 464,352 ornaments from 77,848 eighteenth-century books: browse by book, by human class and machine cluster, by printer and publisher, and upload an ornament to find its type.</p><ul><li>/books — a page strip marks every ornament, by type</li><li>/classes — human classes and machine clusters, each image in date order</li><li>/agents — which plates each printing house used, and which houses shared them</li><li>/search/image — upload an ornament, find its closest classes and houses</li></ul></li><li><h3><a href="https://github.com/rainneko/nero_rome_visual">Nero Rome Reader</a> <small>(open source)</small></h3><p>A reading site for my 430k-character Chinese novel <span lang="zh-Hans">《尼禄重工纪元》</span>: the text on one side, a living 3D Rome (AD 54–68) behind it that changes with the plot as you scroll.</p><ul><li>Nine city states, ~200 historical places, ~20,000 lots, 50+ Blender hero buildings, 581 place-name links</li><li>Three.js, one HTML file, no bundler</li><li>Built with a multi-agent pipeline: Opus directing, Sonnet integrating, Haiku modelling in Blender; 1.12B tokens over three days, 94% cache reads</li></ul></li><li><h3><a href="https://github.com/rainneko/novel2city">novel2city</a> <small>(Claude skill)</small></h3><p>A reusable Claude skill that turns any novel into a chapter-synced 3D city: story bible, period filtering, reference-image scoring, procedural city fabric, hero buildings, lighting, reading UI, and a measured token ledger per stage.</p><ul><li>Nine stages, each with an acceptance gate</li><li>The whole Rome case stood on day one; two weeks of asset refinement followed</li><li>Every token accounted for: ~2–3M per simple building, ~120M for the road system</li></ul></li></ol></noscript><!--/ns--></div>
       </section>
 
       <section class="sec js-only" id="nero" data-panel="nero" data-side="right" data-nav="built">
         <figure class="sec__fig">
-          <img src="assets/nero/10-rome-week2-palatine.jpg" alt="A 3D model of Rome seen from above the Palatine: red-roofed palaces, pines and the city stretching to the hills" loading="lazy" width="1280" height="720">
+          <img src="assets/nero_v2/04_circus_senate_palace.jpg" alt="A 3D render of Nero's Rome: Circus Maximus, the Senate and the palace" loading="lazy" width="1920" height="1080">
         </figure>
         <div class="sec__inner" data-render="project-job" data-key="nero"></div>
       </section>
 
       <section class="sec js-only" id="novel2city" data-panel="novel2city" data-side="right" data-nav="built">
         <figure class="sec__fig">
-          <img src="assets/nero/00-day1-rome.jpg" alt="The reader interface: the Forum of Rome in 3D with labelled temples on the left, the novel's text in a panel on the right" loading="lazy" width="1600" height="900">
+          <img src="assets/nero_v2/04_circus_senate_palace.jpg" alt="A 3D render of Nero's Rome: Circus Maximus, the Senate and the palace" loading="lazy" width="1920" height="1080">
         </figure>
         <div class="sec__inner" data-render="project-job" data-key="novel2city"></div>
       </section>

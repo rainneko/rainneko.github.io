@@ -75,7 +75,7 @@ window.SITE = {
    "name": "ECCO Ornament Atlas",
    "status": "live, beta",
    "url": "https://ecco-atlas-visual-search.2.rahtiapp.fi",
-   "repo": "https://github.com/rainneko/ecco-atlas",
+   "repo": "",
    "one_line": "A public atlas of 464,352 ornaments from 77,848 eighteenth-century books: browse by book, by human class and machine cluster, by printer and publisher, and upload an ornament to find its type.",
    "bullets": [
     "/books — a page strip marks every ornament, by type",
@@ -89,13 +89,6 @@ window.SITE = {
     "ESTC metadata"
    ],
    "media": [
-    {
-     "src": "assets/atlas/home.png",
-     "alt": "ECCO Ornament Atlas home page: an eighteenth-century engraving of a printing house above the introductory text",
-     "cap": "Home",
-     "w": 1440,
-     "h": 900
-    },
     {
      "src": "assets/atlas/classes.png",
      "alt": "ECCO Ornament Atlas, the Ornaments page: a table of human subclasses with thumbnails, image counts, book counts and year spans",
@@ -159,46 +152,32 @@ window.SITE = {
    ],
    "media": [
     {
-     "src": "assets/nero/00-day1-rome.jpg",
-     "alt": "The reader interface: the Forum of Rome in 3D with labelled temples on the left, the novel’s text in a panel on the right",
-     "cap": "Rome on day one",
-     "w": 1600,
-     "h": 900
+     "src": "assets/nero_v2/04_circus_senate_palace.jpg",
+     "alt": "A 3D render of Nero's Rome: Circus Maximus, the Senate and the palace",
+     "cap": "Circus Maximus, the Senate and the palace",
+     "w": 1920,
+     "h": 1080
     },
     {
-     "src": "assets/nero/10-rome-week2-palatine.jpg",
-     "alt": "A 3D model of Rome seen from above the Palatine: red-roofed palaces, pines and the city stretching to the hills",
-     "cap": "The Palatine, week two",
-     "w": 1280,
-     "h": 720
+     "src": "assets/nero_v2/12_capitol_jupiter.jpg",
+     "alt": "A 3D render of Nero's Rome: The Capitol and the temple of Jupiter",
+     "cap": "The Capitol and the temple of Jupiter",
+     "w": 1920,
+     "h": 1080
     },
     {
-     "src": "assets/nero/04-rome-night.jpg",
-     "alt": "Rome at night in the 3D model, seen from above",
-     "cap": "Rome at night",
-     "w": 1100,
-     "h": 620
+     "src": "assets/nero_v2/14_antium_cape.jpg",
+     "alt": "A 3D render of Antium: Nero's villa on the headland",
+     "cap": "Antium: Nero's villa on the headland",
+     "w": 1920,
+     "h": 1080
     },
     {
-     "src": "assets/nero/09-rome-forum-aerial.jpg",
-     "alt": "The Forum of Rome from the air in the 3D model",
-     "cap": "The Forum from the air",
-     "w": 1100,
-     "h": 620
-    },
-    {
-     "src": "assets/nero/01-rome-forum-morning.jpg",
-     "alt": "The Forum of Rome in morning light in the 3D model",
-     "cap": "The Forum, morning",
-     "w": 1100,
-     "h": 620
-    },
-    {
-     "src": "assets/nero/03-antium-bridge.jpg",
-     "alt": "A bridge at Antium in the 3D model",
-     "cap": "Antium, the bridge",
-     "w": 1100,
-     "h": 620
+     "src": "assets/nero_v2/03_palatine_dusk.jpg",
+     "alt": "A 3D render of Nero's Rome: The Palatine at dusk",
+     "cap": "The Palatine at dusk",
+     "w": 1920,
+     "h": 1080
     }
    ]
   },
@@ -221,11 +200,11 @@ window.SITE = {
    ],
    "media": [
     {
-     "src": "assets/nero/00-day1-rome.jpg",
-     "alt": "The reader interface: the Forum of Rome in 3D with labelled temples on the left, the novel’s text in a panel on the right",
-     "cap": "Rome on day one",
-     "w": 1600,
-     "h": 900
+     "src": "assets/nero_v2/04_circus_senate_palace.jpg",
+     "alt": "A 3D render of Nero's Rome: Circus Maximus, the Senate and the palace",
+     "cap": "Circus Maximus, the Senate and the palace",
+     "w": 1920,
+     "h": 1080
     }
    ]
   }
