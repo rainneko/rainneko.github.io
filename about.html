@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-mode="academic" data-page="about">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About · Ruilin Wang</title>
+  <meta name="description" content="Ruilin Wang: from a chatbot thesis and a literature minor in Shanghai to a PhD on computer vision for eighteenth-century books at the COMHIS group, University of Helsinki.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About · Ruilin Wang">
+  <meta property="og:description" content="From a chatbot thesis and a literature minor to a PhD where book history, computer vision and machine learning meet.">
+  <meta property="og:url" content="https://rainneko.github.io/about.html">
+  <meta name="theme-color" content="#fffdfa">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231a1917'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-weight='600' text-anchor='middle' fill='%23fffdfa'%3ER%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+</head>
+<body class="pc">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- Chrome for both modes; styles.css shows the one matching html[data-mode]. -->
+  <header class="nav nav--job">
+    <a class="nav__brand" href="index.html">Ruilin Wang</a>
+    <div class="mode-pill" role="group" aria-label="Site mode">
+      <span class="mode-pill__label">Mode:</span>
+      <a href="index.html?mode=job" data-mode-set="job">Industry</a>
+      <a href="academic.html?mode=academic" data-mode-set="academic">Academic</a>
+    </div>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="index.html#papers">Papers</a>
+      <a href="index.html#built">Built</a>
+      <a href="now.html">Now</a>
+      <a href="about.html" aria-current="true">About</a>
+      <a class="nav__gh" href="https://github.com/rainneko" aria-label="Ruilin Wang on GitHub">GitHub</a>
+    </nav>
+  </header>
+
+  <header class="site-head">
+    <div class="wrap nav-row">
+      <a class="wordmark" href="academic.html">Ruilin Wang</a>
+      <nav class="site-nav" aria-label="Site">
+        <ul>
+          <li><a href="academic.html">Home</a></li>
+          <li><a href="academic.html#projects">Projects</a></li>
+          <li><a href="now.html">Now</a></li>
+          <li><a href="about.html" aria-current="page">About</a></li>
+          <li><a href="https://github.com/rainneko">GitHub</a></li>
+        </ul>
+      </nav>
+      <div class="mode-pill" role="group" aria-label="Site mode">
+        <span class="mode-pill__label">Mode:</span>
+        <a href="index.html?mode=job" data-mode-set="job">Industry</a>
+        <a href="academic.html?mode=academic" data-mode-set="academic">Academic</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="masthead" aria-labelledby="about-heading">
+      <div class="wrap">
+        <h1 id="about-heading" class="page-title">About</h1>
+        <p class="bio" data-render="bio"></p>
+        <!--ns:bio--><noscript><p>I came to computer vision from language: a chatbot thesis, a literature minor, then a master’s on grouping book ornaments. My PhD sits where book history, computer vision and machine learning meet: training self-supervised models on a million ornaments cut from 33 million scanned pages, and turning what they find into tools historians can actually use. Off the clock I write a very long historical novel and build the city it is set in.</p></noscript><!--/ns-->
+        <aside class="pet-note" aria-label="About the desk pet">
+          <noscript><img class="pet-static" src="assets/pet/idle.gif" alt="瑞凌 (Ruiling), my original character" width="192" height="208"></noscript>
+          <p data-render="pet-sentence"></p><!--ns:pet--><noscript><p>The small wolf wandering around this page is <span lang="zh-Hans">瑞凌</span> (Ruiling), my original character. He keeps me company while I work. You can drag him.</p></noscript><!--/ns-->
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="path-heading">
+      <div class="wrap">
+        <h2 id="path-heading">Path</h2>
+        <ol class="path" data-render="path-acad"></ol>
+        <!--ns:path--><noscript><ol class="ns-list"><li><strong>Shanghai:</strong> BSc Software Engineering. Thesis: a question-answering chatbot for psychological comfort — the first time I built a conversational system, and the reason I have followed language models since.</li><li><strong>Shanghai · SISU:</strong> Minor in English Literature, Shanghai International Studies University. Thesis: a close reading of character psychology in Alice Munro.</li><li><strong>Helsinki:</strong> MSc Computer Science, University of Helsinki. Thesis: grouping eighteenth-century ornaments at scale.</li><li><strong>Now:</strong> PhD, Computer Science, COMHIS group, University of Helsinki (year 2).</li></ol></noscript><!--/ns-->
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <div class="thanks">
+        <div class="word word--thanks" data-word="THANKS" data-lazy><span class="word__fallback">Thanks</span></div>
+        <p class="thanks__cap">Decorated initials from the ECCO Ornament Atlas; each links to its class. The atlas has no decorated K, so K is a type letter set in a factotum.</p>
+      </div>
+      <p class="foot__who"><strong>Ruilin Wang</strong> · PhD student in Computer Science, COMHIS group, University of Helsinki · Helsinki, Finland</p>
+      <nav class="foot__links" aria-label="Contact">
+        <a href="https://github.com/rainneko" aria-label="Ruilin Wang on GitHub">GitHub</a>
+        <a href="https://www.helsinki.fi/en/researchgroups/computational-history">COMHIS</a>
+        <a href="mailto:ruilin.wang@helsinki.fi">Email</a>
+      </nav>
+      <p class="foot__small">Updated October 2026 · Ornament images: ECCO Ornament Atlas (Gale ECCO)</p>
+    </div>
+  </footer>
+
+  <script src="pet.js" defer></script>
+</body>
+</html>

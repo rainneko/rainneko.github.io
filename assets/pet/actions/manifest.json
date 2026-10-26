@@ -1,0 +1,212 @@
+[
+  {
+    "slug": "cloak-flourish",
+    "name_zh": "披风一挥扮酷",
+    "frame_count": 4,
+    "playback": "一次性披风展开与收势",
+    "mapped_state": "waving",
+    "file": "actions/cloak-flourish.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 4,
+    "manifest_frame_count": 4
+  },
+  {
+    "slug": "sword-salute",
+    "name_zh": "拔剑亮相",
+    "frame_count": 4,
+    "playback": "一次性拔剑、亮相、收剑",
+    "mapped_state": "waving",
+    "file": "actions/sword-salute.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 4,
+    "manifest_frame_count": 4
+  },
+  {
+    "slug": "training-combo",
+    "name_zh": "训练连击",
+    "frame_count": 6,
+    "playback": "循环战斗练习与回势",
+    "mapped_state": "running",
+    "file": "actions/training-combo.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  },
+  {
+    "slug": "parry-counter",
+    "name_zh": "格挡反击",
+    "frame_count": 6,
+    "playback": "一次性格挡、卸力、反击",
+    "mapped_state": "running",
+    "file": "actions/parry-counter.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  },
+  {
+    "slug": "angry",
+    "name_zh": "生气跺脚",
+    "frame_count": 8,
+    "playback": "一次性跺脚并缓和",
+    "mapped_state": "failed",
+    "file": "actions/angry.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 8,
+    "manifest_frame_count": 8
+  },
+  {
+    "slug": "sad",
+    "name_zh": "难过低落",
+    "frame_count": 8,
+    "playback": "一次性低落并缓慢抬眼",
+    "mapped_state": "failed",
+    "file": "actions/sad.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 8,
+    "manifest_frame_count": 8
+  },
+  {
+    "slug": "breathing",
+    "name_zh": "深呼吸平复",
+    "frame_count": 6,
+    "playback": "循环吸气、呼气、放松",
+    "mapped_state": "running",
+    "file": "actions/breathing.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  },
+  {
+    "slug": "stretch",
+    "name_zh": "舒展检查",
+    "frame_count": 6,
+    "playback": "一次性伸展并恢复警觉",
+    "mapped_state": "review",
+    "file": "actions/stretch.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  },
+  {
+    "slug": "sitting",
+    "name_zh": "端坐守候",
+    "frame_count": 6,
+    "playback": "循环自然坐姿呼吸",
+    "mapped_state": "idle",
+    "file": "actions/sitting.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  },
+  {
+    "slug": "lying",
+    "name_zh": "侧躺小憩",
+    "frame_count": 6,
+    "playback": "循环侧躺恢复呼吸",
+    "mapped_state": "idle",
+    "file": "actions/lying.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  },
+  {
+    "slug": "sleeping",
+    "name_zh": "安稳入睡",
+    "frame_count": 6,
+    "playback": "入睡转为平稳呼吸循环",
+    "mapped_state": "idle",
+    "file": "actions/sleeping.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  },
+  {
+    "slug": "reading",
+    "name_zh": "翻阅古籍",
+    "frame_count": 6,
+    "playback": "循环专注阅读、翻页与眨眼",
+    "mapped_state": "running",
+    "file": "actions/reading.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  },
+  {
+    "slug": "tactics",
+    "name_zh": "记录战术",
+    "frame_count": 6,
+    "playback": "一次性查看地图并标注路线",
+    "mapped_state": "review",
+    "file": "actions/tactics.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  },
+  {
+    "slug": "scouting",
+    "name_zh": "警觉观察",
+    "frame_count": 6,
+    "playback": "循环左右观察后回到警戒",
+    "mapped_state": "review",
+    "file": "actions/scouting.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  },
+  {
+    "slug": "badge-offering",
+    "name_zh": "递出徽章",
+    "frame_count": 6,
+    "playback": "一次性双手递出并等待回应",
+    "mapped_state": "waiting",
+    "file": "actions/badge-offering.gif",
+    "size": [
+      192,
+      208
+    ],
+    "n_frames_gif": 6,
+    "manifest_frame_count": 6
+  }
+]

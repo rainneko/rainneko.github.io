@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" data-mode="academic" data-page="academic">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ruilin Wang</title>
+  <meta name="description" content="Ruilin Wang, PhD student in Computer Science, COMHIS group, University of Helsinki. Self-supervised models that find the same woodblock across 33 million scanned pages, and the public atlas that lets historians use them.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ruilin Wang">
+  <meta property="og:description" content="Self-supervised models that find the same woodblock across 33 million scanned pages, and the public atlas that lets historians use them.">
+  <meta property="og:url" content="https://rainneko.github.io/academic.html">
+  <meta property="og:image" content="https://rainneko.github.io/assets/atlas/home.png">
+  <meta name="theme-color" content="#fffdfa">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231a1917'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-weight='600' text-anchor='middle' fill='%23fffdfa'%3ER%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+</head>
+<body class="pc">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-head">
+    <div class="wrap nav-row">
+      <a class="wordmark" href="academic.html">Ruilin Wang</a>
+      <nav class="site-nav" aria-label="Site">
+        <ul>
+          <li><a href="academic.html" aria-current="page">Home</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="now.html">Now</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="https://github.com/rainneko">GitHub</a></li>
+        </ul>
+      </nav>
+      <div class="mode-pill" role="group" aria-label="Site mode">
+        <span class="mode-pill__label">Mode:</span>
+        <a href="index.html?mode=job" data-mode-set="job">Industry</a>
+        <a href="academic.html?mode=academic" data-mode-set="academic">Academic</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="masthead masthead--compact" aria-labelledby="headline">
+      <div class="wrap">
+        <p class="eyebrow"><strong>Ruilin Wang</strong> · PhD student in Computer Science · <a href="https://www.helsinki.fi/en/researchgroups/computational-history">COMHIS group</a>, University of Helsinki · Helsinki, Finland</p>
+        <h1 id="headline" class="headline">Reading images at scale, from chatbots to woodblocks.</h1>
+        <p class="subline">Self-supervised models that find the same woodblock across 33 million scanned pages, and the public atlas that lets historians use them.</p>
+
+        <ul class="link-row" aria-label="Contact and links">
+          <li><a class="btn" href="https://ecco-atlas-visual-search.2.rahtiapp.fi">ECCO Ornament Atlas (live) <span aria-hidden="true">↗</span></a></li>
+          <li><a href="mailto:ruilin.wang@helsinki.fi">ruilin.wang@helsinki.fi</a></li>
+          <li><a href="https://github.com/rainneko">github.com/rainneko</a></li>
+        </ul>
+
+        <dl class="numbers" aria-label="At a glance">
+          <div><dt>33M</dt><dd>pages of ECCO scanned</dd></div>
+          <div><dt>464K</dt><dd>ornaments in the atlas, from 77,848 books</dd></div>
+          <div><dt>2</dt><dd>peer-reviewed papers (DHQ, SCIA)</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Five different headpieces from the atlas, with MOI and HI in decorated initials between them, each a link to its class; drifts slowly (still under reduced motion). -->
+    <div class="hp-band" data-render="hp-band" aria-label="Headpieces from the ECCO Ornament Atlas"></div>
+
+    <section class="section" id="publications" aria-labelledby="publications-heading">
+      <div class="wrap wrap--pubs">
+        <h2 id="publications-heading">Publications</h2>
+        <ol class="pubs" data-render="pubs-acad"></ol>
+        <!--ns:papers--><noscript><ol class="ns-list"><li><h3><a href="https://doi.org/10.63744/s5tbtsghdxh2">Image Reuse in Eighteenth-Century Book History: Large-Scale Data-Driven Study of Headpiece Ornament Variants</a></h3><p>Ruilin Wang, Lidia Pivovarova, Yann Ryan, Enes Yılandiloğlu, Mikko Tolonen</p><p><em>Digital Humanities Quarterly 19(4)</em>, 2025</p><p>Traces headpiece reuse across ECCO and shows that variants of one design reveal networks of printers and publishers beyond one-to-one ownership.</p><p><a href="https://doi.org/10.63744/s5tbtsghdxh2">doi:10.63744/s5tbtsghdxh2</a> · <a href="https://zenodo.org/records/17035991">Data on Zenodo</a></p></li><li><h3><a href="https://doi.org/10.1007/978-3-031-95911-0_28">Semi-Supervised Contrastive Training for Similar Image Identification in a Large Collection of Historical Books</a></h3><p>Ruilin Wang, Lidia Pivovarova, Yann Ryan, Mikko Tolonen</p><p><em>Image Analysis (SCIA 2025), Lecture Notes in Computer Science, pp. 401–414</em>, 2025</p><p>Groups ECCO headpieces with self-supervised plus supervised contrastive training; an adjusted augmentation pipeline and a semi-supervised fine-tuning step give 94% precision.</p><p><a href="https://doi.org/10.1007/978-3-031-95911-0_28">doi:10.1007/978-3-031-95911-0_28</a></p></li></ol></noscript><!--/ns-->
+        <figure class="atlas-win">
+          <a class="atlas-win__frame" href="https://ecco-atlas-visual-search.2.rahtiapp.fi/classes" aria-label="Open the Ornaments page of the live atlas">
+            <img src="assets/atlas/classes.png" alt="ECCO Ornament Atlas, the Ornaments page: a table of human subclasses with thumbnails, image counts, book counts and year spans" width="1440" height="900" loading="lazy">
+          </a>
+          <figcaption>The data behind both papers, browsable in the live atlas.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="projects" aria-labelledby="projects-heading">
+      <div class="wrap">
+        <h2 id="projects-heading">Projects</h2>
+        <p class="section-intro">Three things I have built. The <a href="index.html?mode=job#built">industry view</a> has the full descriptions and screenshots.</p>
+        <div class="cards" data-render="cards-acad"></div>
+        <!--ns:projects--><noscript><ol class="ns-list"><li><h3><a href="https://ecco-atlas-visual-search.2.rahtiapp.fi">ECCO Ornament Atlas</a> · <a href="https://github.com/rainneko/ecco-atlas">GitHub</a> <small>(live, beta)</small></h3><p>A public atlas of 464,352 ornaments from 77,848 eighteenth-century books: browse by book, by human class and machine cluster, by printer and publisher, and upload an ornament to find its type.</p><ul><li>/books — a page strip marks every ornament, by type</li><li>/classes — human classes and machine clusters, each image in date order</li><li>/agents — which plates each printing house used, and which houses shared them</li><li>/search/image — upload an ornament, find its closest classes and houses</li></ul></li><li><h3><a href="https://github.com/rainneko/nero_rome_visual">Nero Rome Reader</a> <small>(open source)</small></h3><p>A reading site for my 430k-character Chinese novel <span lang="zh-Hans">《尼禄重工纪元》</span>: the text on one side, a living 3D Rome (AD 54–68) behind it that changes with the plot as you scroll.</p><ul><li>Nine city states, ~200 historical places, ~20,000 lots, 50+ Blender hero buildings, 581 place-name links</li><li>Three.js, one HTML file, no bundler</li><li>Built with a multi-agent pipeline: Opus directing, Sonnet integrating, Haiku modelling in Blender; 1.12B tokens over three days, 94% cache reads</li></ul></li><li><h3><a href="https://github.com/rainneko/novel2city">novel2city</a> <small>(Claude skill)</small></h3><p>A reusable Claude skill that turns any novel into a chapter-synced 3D city: story bible, period filtering, reference-image scoring, procedural city fabric, hero buildings, lighting, reading UI, and a measured token ledger per stage.</p><ul><li>Nine stages, each with an acceptance gate</li><li>The whole Rome case stood on day one; two weeks of asset refinement followed</li><li>Every token accounted for: ~2–3M per simple building, ~120M for the road system</li></ul></li></ol></noscript><!--/ns-->
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-heading">
+      <div class="wrap">
+        <h2 id="about-heading">About</h2>
+        <p class="bio" data-render="bio"></p>
+        <!--ns:bio--><noscript><p>I came to computer vision from language: a chatbot thesis, a literature minor, then a master’s on grouping book ornaments. My PhD sits where book history, computer vision and machine learning meet: training self-supervised models on a million ornaments cut from 33 million scanned pages, and turning what they find into tools historians can actually use. Off the clock I write a very long historical novel and build the city it is set in.</p></noscript><!--/ns-->
+        <p class="more"><a href="about.html">More about me →</a><span class="sep" aria-hidden="true">·</span><a href="now.html">What I am doing now →</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <p class="foot__who"><strong>Ruilin Wang</strong> · PhD student in Computer Science, COMHIS group, University of Helsinki · Helsinki, Finland</p>
+      <nav class="foot__links" aria-label="Contact">
+        <a href="https://github.com/rainneko" aria-label="Ruilin Wang on GitHub">GitHub</a>
+        <a href="https://www.helsinki.fi/en/researchgroups/computational-history">COMHIS</a>
+        <a href="mailto:ruilin.wang@helsinki.fi">Email</a>
+      </nav>
+      <p class="foot__small">Updated October 2026 · Ornament images: ECCO Ornament Atlas (Gale ECCO)</p>
+    </div>
+  </footer>
+</body>
+</html>
