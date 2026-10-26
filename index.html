@@ -16,9 +16,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<script src="data.js"></script>
-<script src="site.js"></script>
+<link rel="stylesheet" href="styles.css?v=5eb9a2fa">
+<script src="data.js?v=ba5af09f"></script>
+<script src="site.js?v=7a9d3df4"></script>
 </head>
 <body class="pj">
 
@@ -50,28 +50,16 @@
         <img class="layer__orn" src="assets/ornaments/initial_R.png" alt="A woodcut initial letter R, an eighteenth-century printer's ornament" width="656" height="656">
         <figcaption>A woodcut initial R, an eighteenth-century printer's ornament</figcaption>
       </figure>
-      <figure class="layer layer--cream layer--mosaic" data-layer="atlas" aria-hidden="true">
-        <div class="mosaic mosaic--panel" data-mosaic="36"></div>
-        <figcaption>ECCO Ornament Atlas · /classes — human classes and machine clusters</figcaption>
-      </figure>
-      <figure class="layer layer--photo" data-layer="nero" aria-hidden="true">
-        <img class="layer__shot layer__shot--center" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" data-src="assets/nero_v2/04_circus_senate_palace.jpg" alt="A 3D render of Nero's Rome: Circus Maximus, the Senate and the palace" width="1920" height="1080">
-        <figcaption>Nero Rome Reader · Circus Maximus, the Senate and the palace</figcaption>
-      </figure>
-      <figure class="layer layer--photo" data-layer="novel2city" aria-hidden="true">
-        <img class="layer__shot layer__shot--center" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" data-src="assets/nero_v2/04_circus_senate_palace.jpg" alt="A 3D render of Nero's Rome: Circus Maximus, the Senate and the palace" width="1920" height="1080">
-        <figcaption>novel2city · Circus Maximus, the Senate and the palace</figcaption>
-      </figure>
-      <figure class="layer layer--shot" data-layer="now" aria-hidden="true">
-        <div class="layer__win"><img class="layer__shot layer__shot--app" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" data-src="assets/atlas/agents.png" alt="ECCO Ornament Atlas, the Publishers and printers page: houses ranked by books, blocks used and main house of" width="1440" height="900"></div>
-        <figcaption>ECCO Ornament Atlas · /agents — which plates each printing house used</figcaption>
+      <figure class="layer layer--cream layer--browser" data-layer="now" aria-hidden="true">
+        <div class="bwin"><div class="bwin__bar" aria-hidden="true"><i></i><i></i><i></i><span>ecco-atlas-visual-search.2.rahtiapp.fi</span></div><div class="bwin__view"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" data-src="assets/atlas/home@2x.jpg" alt="ECCO Ornament Atlas home page: the masthead over an engraving of a printing house, and the opening paragraph: 464,352 ornaments in 77,848 books" width="2880" height="1800"></div></div>
+        <figcaption>ECCO Ornament Atlas · the home page, live at ecco-atlas-visual-search.2.rahtiapp.fi</figcaption>
       </figure>
       <figure class="layer layer--cream layer--word" data-layer="about" aria-hidden="true">
-        <div class="word word--panel word--two" data-word="HI"><span class="word__fallback">Hi</span></div>
-        <figcaption>Decorated initials H and I from the ECCO Ornament Atlas; each links to its class.</figcaption>
+        <div class="word word--panel" data-word="MOI"><span class="word__fallback">Moi</span></div>
+        <figcaption>Moi (Finnish for hi), in decorated initials M, O and I from the ECCO Ornament Atlas; each links to its class.</figcaption>
       </figure>
     </div>
-    <div class="panel__index" aria-hidden="true">01 / 06</div>
+    <div class="panel__index" aria-hidden="true">01 / 03</div>
   </aside>
   </div>
 
@@ -130,7 +118,7 @@
     <!-- 03 · Now -->
     <section class="sec" id="now" data-panel="now" data-side="left" data-nav="now">
       <figure class="sec__fig sec__fig--zoom">
-        <img src="assets/atlas/agents.png" alt="ECCO Ornament Atlas, the Publishers and printers page: houses ranked by books, blocks used and main house of" loading="lazy" width="1440" height="900">
+        <img src="assets/atlas/home@2x.jpg" alt="ECCO Ornament Atlas home page: the masthead over an engraving of a printing house, and the opening paragraph: 464,352 ornaments in 77,848 books" loading="lazy" width="2880" height="1800">
       </figure>
       <div class="sec__inner">
         <div class="sec__label reveal"><h2 class="sec__h">Now</h2> <span class="sec__meta" data-render="now-updated" data-prefix="updated "></span></div>
@@ -142,8 +130,8 @@
     <!-- 04 · About (the desk pet lives here) -->
     <section class="sec" id="about" data-panel="about" data-side="left" data-nav="about">
       <figure class="sec__fig sec__fig--cream sec__fig--word">
-        <div class="word word--two" data-word="HI" data-lazy><span class="word__fallback">Hi</span></div>
-        <figcaption>Hi, in decorated initials from the ECCO Ornament Atlas.</figcaption>
+        <div class="word" data-word="MOI" data-lazy><span class="word__fallback">Moi</span></div>
+        <figcaption>Moi, in decorated initials from the ECCO Ornament Atlas.</figcaption>
       </figure>
       <div class="sec__inner">
         <h2 class="sec__label reveal">About</h2>
@@ -174,6 +162,6 @@
   </div>
 </footer>
 
-<script src="pet.js" defer></script>
+<script src="pet.js?v=ec75039f" defer></script>
 </body>
 </html>

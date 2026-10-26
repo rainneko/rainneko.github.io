@@ -113,20 +113,51 @@
     var r = n.getBoundingClientRect();
     return r.width > W && r.height > 0 && r.bottom > 0 ? r : null;
   }
-  /* nearest platform top at or below his feet that his feet overlap, else null (floor) */
-  function findPlatform() {
-    var feet = viewH() - y, cx = x + W / 2, best = null, bestTop = Infinity;
-    var vh = viewH();
+  /* every visible text block he could stand on, with its rect.
+     .reveal blocks count even while they are still fading in (opacity 0 for
+     a moment after they scroll into view). */
+  function platforms() {
+    var vh = viewH(), out = [];
     Array.prototype.forEach.call(document.querySelectorAll(PLAT_SEL), function (n) {
       if (n === el || el.contains(n) || n.closest('.pet, [aria-hidden="true"], .panel')) return;
       var r = platRect(n);
-      if (!r || r.top < feet - 4 || r.top < H * 0.5 || r.top > vh - 24) return;
-      if (cx < r.left + 8 || cx > r.right - 8) return;
+      if (!r || r.top < H * 0.5 || r.top > vh - 24) return;
       var cs = getComputedStyle(n);
-      if (cs.visibility === 'hidden' || +cs.opacity === 0) return;
-      if (r.top < bestTop) { bestTop = r.top; best = n; }
+      if (cs.visibility === 'hidden' || cs.display === 'none') return;
+      if (+cs.opacity === 0 && !n.closest('.reveal')) return;
+      out.push({ n: n, r: r });
     });
-    return best;
+    return out;
+  }
+  /* the platform under him: the nearest top at or below his feet.
+     dropped = he was let go by the user: then a block his feet are already
+     inside counts too (you drop him "on" a paragraph, not above it), and he
+     steps up onto its top edge. */
+  function findPlatform(dropped) {
+    var feet = viewH() - y, cx = x + W / 2, below = null, bTop = Infinity, inside = null, iTop = -Infinity;
+    platforms().forEach(function (p) {
+      var r = p.r;
+      if (cx < r.left + 8 || cx > r.right - 8) return;
+      if (r.top >= feet - 4) { if (r.top < bTop) { bTop = r.top; below = p.n; } }
+      else if (dropped && feet <= r.bottom + 4 && r.top > iTop) { iTop = r.top; inside = p.n; }
+    });
+    return below && bTop - feet < 48 ? below : (inside || below);
+  }
+  /* another platform within reach of the one he is on (for a leap) */
+  function neighbour(dir) {
+    if (!plat) return null;
+    var pr = plat.getBoundingClientRect(), list = [];
+    platforms().forEach(function (p) {
+      var n = p.n, r = p.r;
+      if (n === plat || n.contains(plat) || plat.contains(n)) return;
+      var gap = dir > 0 ? r.left - pr.right : pr.left - r.right;
+      var dy = Math.abs(r.top - pr.top);
+      if (gap > 140 || dy > 120 || dy < 6) return;
+      if (dir > 0 ? r.right < pr.right + 40 : r.left > pr.left - 40) return;   /* must lie that way */
+      if (r.top - H < 0) return;
+      list.push(n);
+    });
+    return list.length ? pick(list) : null;
   }
   function onPlatform() { return plat && ground() > 0; }
 
@@ -208,7 +239,11 @@
       /* walk along the platform; now and then walk off its end */
       var pr = plat.getBoundingClientRect();
       lo = Math.max(0, pr.left - W / 2 + 10); hi = Math.min(maxX(), pr.right - W / 2 - 10);
-      if (Math.random() < 0.3) { off = true; }
+      if (Math.random() < 0.3) {
+        var d0 = x - lo < hi - x ? -1 : 1, hop = neighbour(d0) || neighbour(-d0);
+        if (hop && Math.random() < 0.5) { leap(hop); return; }
+        off = true;
+      }
     }
     var span = hi - lo;
     if (!off && span < 60) { idle(); return; }
@@ -257,8 +292,34 @@
     load(nextFlourish());                 /* fetch the one after, nothing more */
     oneShot(key);
   }
-  function fall() {
-    plat = findPlatform();
+  /* a short arc onto a nearby platform, playing jumping.gif */
+  function leap(n) {
+    var r = n.getBoundingClientRect(), pr = plat.getBoundingClientRect();
+    var x0 = x, y0 = y, x1;
+    if (r.left >= pr.right - 40) x1 = r.left + 12;
+    else if (r.right <= pr.left + 40) x1 = r.right - W - 12;
+    else x1 = Math.max(r.left + 12 - W / 2, Math.min(r.right - W / 2 - 12, x));
+    x1 = clampX(x1);
+    setState('leap', 'jump');
+    lastJump = Date.now();
+    var t0 = performance.now(), dur = GIFS.jump[1], arc = 46;
+    function step(t) {
+      var k = Math.min(1, (t - t0) / dur);
+      var rr = n.getBoundingClientRect(), y1 = viewH() - rr.top;      /* re-read: the page may scroll */
+      x = x0 + (x1 - x0) * k;
+      y = y0 + (y1 - y0) * k + 4 * arc * k * (1 - k);
+      place();
+      if (k < 1) { raf = requestAnimationFrame(step); return; }
+      raf = null;
+      plat = n;
+      var g = ground();
+      if (g < 0) { plat = null; fall(); return; }
+      y = g; place(); landed();
+    }
+    raf = requestAnimationFrame(step);
+  }
+  function fall(dropped) {
+    plat = findPlatform(dropped);
     var g = Math.max(0, ground());
     if (y <= g + 1) { y = g; place(); landed(); return; }
     setState('fall', 'jump');
@@ -317,7 +378,7 @@
     el.classList.remove('is-dragging');
     try { el.releasePointerCapture(e.pointerId); } catch (err) { /* ignore */ }
     if (!moved) {
-      if (y > Math.max(0, ground()) + 1 && !reduced.matches) { afterLand = 'flourish'; fall(); } else { y = Math.max(0, ground()); place(); flourish(); }
+      if (y > Math.max(0, ground()) + 1 && !reduced.matches) { afterLand = 'flourish'; fall(true); } else { y = Math.max(0, ground()); place(); flourish(); }
       return;
     }
     if (y > 20) {                         /* let go off the floor */
@@ -326,7 +387,7 @@
       drops.push(now);
       if (drops.length > 3) { drops = []; load('sad'); afterLand = 'sad'; }
     }
-    if (reduced.matches) { plat = findPlatform(); y = Math.max(0, ground()); place(); landed(); } else fall();
+    if (reduced.matches) { plat = findPlatform(true); y = Math.max(0, ground()); place(); landed(); } else fall(true);
   }
   el.addEventListener('pointerup', endDrag);
   el.addEventListener('pointercancel', endDrag);
@@ -348,7 +409,7 @@
 
   /* he is position:fixed, so on scroll he rides his platform (or falls when it leaves the view) */
   function follow() {
-    if (!plat || drag || state === 'fall' || state === 'walk') return;
+    if (!plat || drag || state === 'fall' || state === 'walk' || state === 'leap') return;
     var g = ground();
     if (g < 0) { plat = null; if (reduced.matches) { y = 0; place(); } else fall(); return; }
     y = g; place();
@@ -400,24 +461,37 @@
   if (reduced.addEventListener) reduced.addEventListener('change', applyMotionPreference);
   else if (reduced.addListener) reduced.addListener(applyMotionPreference);
 
-  /* ---- on / off with the About section on index.html ---- */
-  if (zone && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting === active) return;
-        active = e.isIntersecting;
-        el.classList.toggle('is-on', active);
-        el.setAttribute('aria-hidden', String(!active));
-        el.setAttribute('tabindex', active ? '0' : '-1');
-        if (active) { measure(); x = clampX(x); applyMotionPreference(); }
-        else { drag = null; el.classList.remove('is-dragging'); stopTimers(); state = 'off'; }
-      });
-    }, { threshold: 0.2 }).observe(zone);
+  /* ---- on / off with the About section on index.html ----
+     Checked on scroll / resize as well as by IntersectionObserver, so he
+     switches on even where the observer is slow to report. */
+  function setActive(on) {
+    if (on === active) return;
+    active = on;
+    el.classList.toggle('is-on', active);
+    el.setAttribute('aria-hidden', String(!active));
+    el.setAttribute('tabindex', active ? '0' : '-1');
+    if (active) { measure(); x = clampX(x); applyMotionPreference(); }
+    else { drag = null; el.classList.remove('is-dragging'); stopTimers(); state = 'off'; }
   }
+  function checkZone() {
+    var r = zone.getBoundingClientRect(), vh = viewH();
+    var seen = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+    setActive(seen > Math.min(r.height, vh) * 0.2);
+  }
+  if (zone) {
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function () { checkZone(); }, { threshold: [0, 0.2, 0.5] }).observe(zone);
+    }
+    window.addEventListener('scroll', checkZone, { passive: true });
+    window.addEventListener('resize', checkZone);
+  }
+
+  if (/[?&]petdebug/.test(location.search)) window.__pet = { leap: leap, neighbour: neighbour, findPlatform: findPlatform, plat: function () { return plat; } };
 
   /* ---- start ---- */
   x = homeX();
   planActivity();
   load(nextFlourish());
   if (active) applyMotionPreference(); else place();
+  if (zone) checkZone();
 })();

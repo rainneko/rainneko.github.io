@@ -116,8 +116,6 @@
     });
 
     /* job: one section per project (v3 markup) */
-    var THUMBS_FROM = { nero: 1 };
-    var THUMBS_LABEL = { atlas: 'More pages of the atlas', nero: 'More views of the city' };
     fill('[data-render="project-job"]', function (box) {
       var key = box.getAttribute('data-key'), i = 0, pr = null;
       S.projects.forEach(function (p, j) { if (p.key === key) { pr = p; i = j; } });
@@ -138,15 +136,6 @@
       if (pr.url !== pr.repo || !pr.repo) cta.appendChild(h('a', { 'class': 'btn btn--primary', href: pr.url }, ['Open the atlas ', arrow()]));
       if (pr.repo) cta.appendChild(h('a', { 'class': 'btn' + (pr.url === pr.repo ? ' btn--primary' : ''), href: pr.repo, 'aria-label': pr.name + ' on GitHub' }, ['GitHub ', arrow()]));
       box.appendChild(cta);
-      if (THUMBS_FROM[key] != null) {
-        box.appendChild(h('ul', { 'class': 'thumbs reveal', 'aria-label': THUMBS_LABEL[key] },
-          pr.media.slice(THUMBS_FROM[key]).map(function (m) {
-            return h('li', null, [h('figure', null, [
-              h('img', { src: m.src, alt: m.alt, loading: 'lazy', width: m.w, height: m.h }),
-              h('figcaption', null, [m.cap])
-            ])]);
-          })));
-      }
     });
 
     /* academic: publications (v4 markup) */
@@ -286,13 +275,100 @@
     });
   }
 
+  /* ---------- 3b. job page: Built, Apple-Store style ----------
+     The three project sections become one block: the project text sits in a
+     sticky left column, vertically centred, while the wheel steps a large
+     image on the right through every picture of the project, then the next
+     project (the text swaps at the same moment). Below 901 px, with reduced
+     motion, or without JS, the images simply stack under / beside the text. */
+  function built(S) {
+    var block = d.querySelector('.pj #built');
+    if (!block || !S.projects) return;
+    var bs = h('div', { 'class': 'bs', 'data-panel': 'built', 'data-side': 'left', 'data-nav': 'built' });
+    var pin = h('div', { 'class': 'bs__pin' });
+    var steps = [];
+    S.projects.forEach(function (pr, pi) {
+      var sec = d.getElementById(pr.key);
+      var inner = sec && sec.querySelector('[data-render="project-job"]');
+      if (!inner) return;
+      var proj = h('section', { 'class': 'bs__proj', id: pr.key, 'aria-label': pr.name });
+      inner.classList.add('bs__text');
+      each(inner.querySelectorAll('.reveal'), function (r) { r.classList.remove('reveal'); });
+      var figs = h('div', { 'class': 'bs__figs' });
+      var media = (pr.media || []).slice();
+      if (pr.key === 'atlas') media.unshift({ mosaic: true, cap: 'Human classes and machine clusters, with one real row of the /classes table' });
+      media.forEach(function (m, mi) {
+        var box = m.mosaic ? h('div', { 'class': 'bs__media bs__media--mosaic' }, [h('div', { 'class': 'mosaic mosaic--bs', 'data-mosaic': '30' })])
+          : h('div', { 'class': 'bs__media' + (pr.key === 'atlas' ? ' bs__media--shot' : '') }, [
+            h('img', { src: m.src, alt: m.alt, width: m.w, height: m.h, loading: mi < 2 ? 'eager' : 'lazy', decoding: 'async' })]);
+        var fig = h('figure', { 'class': 'bs__fig' }, [box, h('figcaption', null, [pr.name + ' · ' + m.cap])]);
+        figs.appendChild(fig);
+        steps.push({ proj: proj, fig: fig });
+      });
+      proj.appendChild(inner);
+      proj.appendChild(figs);
+      pin.appendChild(proj);
+      sec.parentNode.removeChild(sec);
+    });
+    if (!steps.length) return;
+    bs.appendChild(pin);
+    block.appendChild(bs);
+
+    var wide = window.matchMedia('(min-width: 901px)');
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var STEP = 0.8;                       /* viewport heights of scroll per image */
+    var cur = -1, ticking = false, on = false;
+    function show(i) {
+      if (i === cur) return;
+      var prev = cur;
+      cur = i;
+      steps.forEach(function (s, k) {
+        s.fig.classList.toggle('is-on', k === i);
+        s.fig.classList.toggle('is-past', k < i);
+      });
+      var pj = steps[i].proj;
+      each(pin.children, function (p) {
+        var a = p === pj;
+        p.classList.toggle('is-on', a);
+        if (a) p.removeAttribute('inert'); else p.setAttribute('inert', '');
+      });
+      if (prev < 0 || steps[prev].proj !== pj) {
+        var img = steps[Math.min(steps.length - 1, i + 1)].fig.querySelector('img');
+        if (img) img.loading = 'eager';
+      }
+    }
+    function update() {
+      ticking = false;
+      if (!on) return;
+      var r = bs.getBoundingClientRect(), vh = window.innerHeight;
+      var p = -r.top / Math.max(1, r.height - vh);
+      show(Math.max(0, Math.min(steps.length - 1, Math.floor(p * steps.length))));
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    function mode() {
+      on = wide.matches && !still.matches;
+      root.classList.toggle('bs-on', on);
+      bs.style.height = on ? (100 + steps.length * STEP * 100) + 'vh' : '';
+      if (on) { cur = -1; update(); }
+      else {
+        cur = -1;
+        each(pin.children, function (p) { p.classList.remove('is-on'); p.removeAttribute('inert'); });
+        steps.forEach(function (s) { s.fig.classList.remove('is-on', 'is-past'); });
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    if (wide.addEventListener) { wide.addEventListener('change', mode); still.addEventListener('change', mode); }
+    mode();
+  }
+
   /* ---------- 4. job page: split interface (from v3_split) ---------- */
   function split() {
     var stage = d.querySelector('.stage');
     var panel = d.querySelector('.panel');
     if (!stage) return;
     var layers = toArray(d.querySelectorAll('.panel .layer'));
-    var sections = toArray(d.querySelectorAll('.sec[data-panel]'));
+    var sections = toArray(d.querySelectorAll('.sec[data-panel], .bs[data-panel]'));
     var navLinks = toArray(d.querySelectorAll('.nav a[data-nav]'));
     var indexEl = d.querySelector('.panel__index');
     var desktop = window.matchMedia('(min-width: 901px)');
@@ -339,6 +415,7 @@
       activeKey = key;
       showLayer(key);
       stage.classList.toggle('is-right', sec.getAttribute('data-side') === 'right');
+      stage.classList.toggle('in-built', key === 'built');
       setNav(sec.getAttribute('data-nav'));
     }
     var pending = null, pendT = 0, settled = false;
@@ -445,21 +522,9 @@
       ]);
       box.appendChild(rec);
       if (!hit) return;
-      var NS = 'http://www.w3.org/2000/svg';
-      var svg = d.createElementNS(NS, 'svg'), line = d.createElementNS(NS, 'line');
-      svg.setAttribute('class', 'mosaic__link'); svg.setAttribute('aria-hidden', 'true');
-      svg.appendChild(line); box.appendChild(svg);
-      function draw() {
-        var b = box.getBoundingClientRect(), p = hit.getBoundingClientRect(), q = rec.querySelector('img').getBoundingClientRect();
-        if (!b.width) return;
-        line.setAttribute('x1', p.left + p.width / 2 - b.left); line.setAttribute('y1', p.top + p.height / 2 - b.top);
-        line.setAttribute('x2', q.left + q.width / 2 - b.left); line.setAttribute('y2', q.top + q.height / 2 - b.top);
-      }
-      function on() { draw(); hit.classList.add('is-hit'); box.classList.add('is-linked'); }
+      function on() { hit.classList.add('is-hit'); }
       if (reduce || !('IntersectionObserver' in window)) { box.classList.add('no-anim'); setTimeout(on, 50); }
       else new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) setTimeout(on, 500); }); }, { threshold: 0.35 }).observe(box);
-      window.addEventListener('resize', draw);
-      box.addEventListener('transitionend', draw);
     });
   }
 
@@ -467,7 +532,7 @@
   root.classList.add('js');
   function boot() {
     var S = window.SITE;
-    if (S) { render(S); words(S); band(S); }
+    if (S) { render(S); built(S); words(S); band(S); }
     mosaic();
     markPill();
     /* On About / Now the pill switches the chrome in place; on the two home
