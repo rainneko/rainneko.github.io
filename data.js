@@ -227,10 +227,6 @@ window.SITE = {
    {
     "text": "January–March 2027: research exchange with the AI4DH project.",
     "verify": false
-   },
-   {
-    "text": "Open to a 2027 research internship in vision-language / multimodal models.",
-    "verify": true
    }
   ]
  },
